@@ -1,8 +1,10 @@
 import {ContactListStyled, ContactListItemStyled, ContactListNameStyled,ContactListNumberStyled} from "./ContactList.styled";
-import {PhoneboockButtonStyled} from "../Box/Button.styled"
+import {PhoneboockButtonStyled} from "../Box/Button.styled";
+import PropTypes from 'prop-types';
 
 
 export const ContactList = ({numberList, onDeleteItem}) => {
+    
     return(
         <ContactListStyled>
             {numberList.map(i => {
@@ -17,5 +19,14 @@ export const ContactList = ({numberList, onDeleteItem}) => {
         </ContactListStyled>
     )
 
+};
+
+ContactList.propTypes ={
+    numberList: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        tel: PropTypes.string.isRequired,
+    })),
+    onDeleteItem: PropTypes.func.isRequired,
 };
 

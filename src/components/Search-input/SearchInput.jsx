@@ -1,6 +1,7 @@
 import { PhoneboockInputStyled, PhoneboockLabelStyled } from "../Form/phoneboock-form.styled";
 import React, {Component} from "react";
 import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 
 const searchInputId = nanoid()
 
@@ -32,6 +33,10 @@ onChange={this.handleSearch} />
     )
  }
 
+};
+
+SearchInput.propTypes = {
+    onSearch: PropTypes.func.isRequired,   
 };
 
 export default SearchInput;

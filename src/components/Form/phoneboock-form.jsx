@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { PhoneboockFormStyled, PhoneboockInputStyled, PhoneboockLabelStyled } from "./phoneboock-form.styled";
 import {PhoneboockButtonStyled} from "../Box/Button.styled"
@@ -7,6 +8,7 @@ const nameInputId = nanoid()
 const telInputId = nanoid()
 
 class PhoneboockForm extends Component {
+
 state = {
 name: '',
 tel: '',
@@ -66,5 +68,8 @@ render() {
 };
 };
 
+PhoneboockForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+};
 export default PhoneboockForm;
 
