@@ -1,4 +1,5 @@
 import { DeletButtonIcon } from './IconButton.styled';
+import PropTypes from 'prop-types';
 
 export const DeletButton = ({ number, onDeleteItem }) => {
   return (
@@ -9,4 +10,9 @@ export const DeletButton = ({ number, onDeleteItem }) => {
       }}
     />
   );
+};
+
+DeletButton.propTypes = {
+  number: PropTypes.string.isRequired,
+  onDeleteItem: PropTypes.func.isRequired,
 };
