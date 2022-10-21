@@ -17,8 +17,8 @@ const SearchInput = ({ onSearch }) => {
   };
 
   useEffect(() => {
-    onSearch(e.currentTarget.value);
-  }, [query]);
+    onSearch(query);
+  }, [query, onSearch]);
 
   return (
     <PhoneboockLabelStyled id={searchInputId}>
