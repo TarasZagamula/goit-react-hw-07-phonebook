@@ -7,18 +7,20 @@ import SearchInput from './Search-input/SearchInput';
 import initialnumbers from '../data/initial-numbers.json';
 
 const App = () => {
-  const [numberList, setNumberlist] = useState(initialnumbers);
+  const [numberList, setNumberlist] = useState(
+    JSON.parse(localStorage.getItem('numberList')) ?? initialnumbers
+  );
   const [filter, setFilter] = useState('');
 
-  const localNumberList = localStorage.getItem('numberList');
   const lowerFilter = filter.toLowerCase();
   const filtredList = numberList.filter(num =>
     num.name.toLowerCase().includes(lowerFilter)
   );
 
-  useEffect(() => {
-    localNumberList && setNumberlist(JSON.parse(localNumberList));
-  }, []);
+  // useEffect(() => {
+  //   const localNumberList = localStorage.getItem('numberList');
+  //   localNumberList && setNumberlist(JSON.parse(localNumberList));
+  // }, []);
 
   useEffect(() => {
     window.localStorage.setItem('numberList', JSON.stringify(numberList));
