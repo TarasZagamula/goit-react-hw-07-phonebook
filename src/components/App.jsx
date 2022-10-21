@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { ContactList } from './Contact-list/ContactList';
 import { Box } from '../components/Box/box.styled';
@@ -6,38 +6,33 @@ import PhoneboockForm from './Form/phoneboock-form';
 import SearchInput from './Search-input/SearchInput';
 import initialnumbers from '../data/initial-numbers.json'
 
-class App extends Component {
-  state = {
-    numberList: initialnumbers,
-    filter: '',
+const App = () => {
+
+  const [numberList, setNumberlist] = useState(initialnumbers);
+  const [filter, setFilter] = useState('');
+
+  const filtredList = numberList.filter(num =>
+    num.toLowerCase().includes(filter)
+  );
+
+  useEffect(() => {
+    const localNumberList = localStorage.getItem('numberList');
+    numberList && setNumberList(JSON.parse(localNumberList));
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem('numberList', JSON.stringify(numberList))
+  }, [numberList]);
+
+  const deleteItem = id => {
+    setNumberlist(numberList.filter(num => num.id !== id))
   };
 
-  componentDidMount() {
-    const numberList = localStorage.getItem('numberList');
-    numberList && this.setState({ numberList: JSON.parse(numberList) });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.numberList === prevState.numberList) {
-      return;
-    }
-    localStorage.setItem('numberList', JSON.stringify(this.state.numberList));
-  }
-
-  deleteItem = id => {
-    this.setState(prevState => ({
-      numberList: prevState.numberList.filter(num => num.id !== id),
-    }));
+  const filterSet = data => {
+    setFilter(data.toLowerCase())
   };
 
-  filterSet = data => {
-    this.setState({
-      filter: data,
-    });
-  };
-
-  dataSet = data => {
-    const initState = this.state.numberList;
+  const dataSet = (data) => {
     const userId = nanoid();
     const user = {
       id: userId,
@@ -45,20 +40,11 @@ class App extends Component {
       tel: data.tel,
     };
 
-    if (initState.find(i => i.name === user.name || i.tel === user.tel)) {
+    if (numberList.find(i => i.name === user.name || i.tel === user.tel)) {
       return alert(`this name or number is already used`);
     }
-    return this.setState(prevState => ({
-      numberList: [user, ...prevState.numberList],
-    }));
+    return setNumberlist(prev => [user, ...prev]);
   };
-
-  render() {
-    const numberList = this.state.numberList;
-    const filterValue = this.state.filter.toLowerCase();
-    const filtredList = numberList.filter(num =>
-      num.name.toLowerCase().includes(filterValue)
-    );
 
     return (
       <div
@@ -73,20 +59,19 @@ class App extends Component {
         }}
       >
         <Box>
-          <PhoneboockForm onSubmit={this.dataSet} />
+          <PhoneboockForm onSubmit={dataSet} />
         </Box>
-        {this.state.numberList.length > 0 && (
+        {numberList.length > 0 && (
           <Box>
-            <SearchInput onSearch={this.filterSet} />
+            <SearchInput onSearch={filterSet} />
             <ContactList
               numberList={filtredList}
-              onDeleteItem={this.deleteItem}
+              onDeleteItem={deleteItem}
             />
           </Box>
         )}
       </div>
     );
-  }
 }
 
 export default App;

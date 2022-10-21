@@ -1,12 +1,11 @@
+import PropTypes from 'prop-types';
+import { DeletButton } from '../Buttons/IconButton/IconButton';
 import {
   ContactListStyled,
   ContactListItemStyled,
   ContactListNameStyled,
   ContactListNumberStyled,
 } from './ContactList.styled';
-import { DeletButton } from '../Buttons/IconButton/IconButton';
-
-import PropTypes from 'prop-types';
 
 export const ContactList = ({ numberList, onDeleteItem }) => {
   return (

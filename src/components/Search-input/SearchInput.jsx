@@ -1,41 +1,38 @@
+import { useState, useEffect } from 'react';
+import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
 import {
   PhoneboockInputStyled,
   PhoneboockLabelStyled,
 } from '../Form/phoneboock-form.styled';
-import React, { Component } from 'react';
-import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 
 const searchInputId = nanoid();
 
-class SearchInput extends Component {
-  state = {
-    searchValue: '',
-  };
-  handleInputChange = e => {
-    const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
+const SearchInput = ({ onSearch }) => {
+  const [query, setQuery] = useState('');
+
+  const handleInputChange = e => {
+    const { value } = e.currentTarget;
+    setQuery(value);
   };
 
-  handleSearch = e => {
-    this.props.onSearch(e.currentTarget.value);
-  };
+  useEffect(() => {
+    onSearch(e.currentTarget.value);
+  }, [query]);
 
-  render() {
-    return (
-      <PhoneboockLabelStyled id={searchInputId}>
-        Search
-        <PhoneboockInputStyled
-          id={searchInputId}
-          type="text"
-          name="search"
-          value={this.state.search}
-          onChange={this.handleSearch}
-        />
-      </PhoneboockLabelStyled>
-    );
-  }
-}
+  return (
+    <PhoneboockLabelStyled id={searchInputId}>
+      Search
+      <PhoneboockInputStyled
+        id={searchInputId}
+        type="text"
+        name="search"
+        value={query}
+        onChange={handleInputChange}
+      />
+    </PhoneboockLabelStyled>
+  );
+};
 
 SearchInput.propTypes = {
   onSearch: PropTypes.func.isRequired,
