@@ -36,16 +36,14 @@ const App = () => {
 
   const dataSet = data => {
     const userId = nanoid();
-    const user = {
-      id: userId,
-      name: data.name,
-      tel: data.tel,
-    };
-
-    if (numberList.find(i => i.name === user.name || i.tel === user.tel)) {
+    
+    if (numberList.find(i => i.name === data.name || i.tel === data.tel)) {
       return alert(`this name or number is already used`);
     }
-    return setNumberlist(prev => [user, ...prev]);
+    return setNumberlist(prev => [
+      { id: userId, name: data.name, tel: data.tel },
+      ...prev,
+    ]);
   };
 
   return (
