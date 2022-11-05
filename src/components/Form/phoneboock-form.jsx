@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../Redax/numberListSlice';
 import { nanoid } from 'nanoid';
 import { PhoneboockButtonStyled } from '../Buttons/TextButton/Button.styled';
 import {
@@ -11,7 +12,10 @@ import {
 const nameInputId = nanoid();
 const telInputId = nanoid();
 
-const PhoneboockForm = ({ onSubmit }) => {
+const PhoneboockForm = () => {
+  const numberList = useSelector(state => state.numberList.numberList);
+  const dispatch = useDispatch();
+
   const [name, setName] = useState('');
   const [tel, setTel] = useState('');
 
@@ -31,7 +35,10 @@ const PhoneboockForm = ({ onSubmit }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit({ name, tel });
+    if (numberList.find(i => i.name === name || i.tel === tel)) {
+     return alert(`this name or number is already used`);
+    }
+    dispatch(addContact({ name, tel }));
     setName('');
     setTel('');
   };
@@ -69,7 +76,4 @@ const PhoneboockForm = ({ onSubmit }) => {
   );
 };
 
-PhoneboockForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
 export default PhoneboockForm;

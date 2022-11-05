@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setFilter } from '../../Redax/numberListSlice';
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 import {
   PhoneboockInputStyled,
   PhoneboockLabelStyled,
@@ -8,17 +9,16 @@ import {
 
 const searchInputId = nanoid();
 
-const SearchInput = ({ onSearch }) => {
+const SearchInput = () => {
+  const dispatch = useDispatch();
+
   const [query, setQuery] = useState('');
 
   const handleInputChange = e => {
     const { value } = e.currentTarget;
+    dispatch(setFilter(value.toLowerCase()));
     setQuery(value);
   };
-
-  useEffect(() => {
-    onSearch(query);
-  }, [query, onSearch]);
 
   return (
     <PhoneboockLabelStyled id={searchInputId}>
@@ -32,10 +32,6 @@ const SearchInput = ({ onSearch }) => {
       />
     </PhoneboockLabelStyled>
   );
-};
-
-SearchInput.propTypes = {
-  onSearch: PropTypes.func.isRequired,
 };
 
 export default SearchInput;

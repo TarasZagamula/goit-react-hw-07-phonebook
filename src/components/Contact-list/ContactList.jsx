@@ -1,4 +1,5 @@
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteContact } from '../../Redax/numberListSlice';
 import { DeletButton } from '../Buttons/IconButton/IconButton';
 import {
   ContactListStyled,
@@ -7,32 +8,27 @@ import {
   ContactListNumberStyled,
 } from './ContactList.styled';
 
-export const ContactList = ({ numberList, onDeleteItem }) => {
+export const ContactList = () => {
+  const numberList = useSelector(store => store.numberList.numberList);
+  const filter = useSelector(store => store.numberList.filter);
+  const filtredList = numberList.filter(num =>
+    num.name.toLowerCase().includes(filter)
+  );
+  const dispatch = useDispatch();
   return (
     <ContactListStyled>
-      {numberList.map(i => {
+      {filtredList.map(i => {
         return (
           <ContactListItemStyled key={i.id}>
             <ContactListNameStyled>{i.name}</ContactListNameStyled>
             <ContactListNumberStyled>{i.tel}</ContactListNumberStyled>
             <DeletButton
               number={i.id}
-              onDeleteItem={onDeleteItem}
+              onDeleteItem={() => dispatch(deleteContact(i.id))}
             ></DeletButton>
           </ContactListItemStyled>
         );
       })}
     </ContactListStyled>
   );
-};
-
-ContactList.propTypes = {
-  numberList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      tel: PropTypes.string.isRequired,
-    })
-  ),
-  onDeleteItem: PropTypes.func.isRequired,
 };
